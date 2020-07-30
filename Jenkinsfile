@@ -6,8 +6,12 @@ pipeline {
               git 'https://github.com/gauravbhalekar5/web-application.git'
             }
         }
-        triggers {
-           pollSCM '* * * * *'
+        stage('Poll SCM Trigger') {
+            steps {
+                triggers {
+                  pollSCM '* * * * *'
+                }
+            }
         }
         stage('Build Application') {
             steps {
