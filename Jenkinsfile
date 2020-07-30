@@ -1,13 +1,13 @@
 pipeline {
     agent any
-    triggers {
-      pollSCM '* * * * *'
-    }
     stages {
         stage('Git Checkout') {
             steps {
               git 'https://github.com/gauravbhalekar5/web-application.git'
             }
+        }
+        triggers {
+           pollSCM '* * * * *'
         }
         stage('Build Application') {
             steps {
