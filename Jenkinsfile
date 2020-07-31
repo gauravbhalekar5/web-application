@@ -27,13 +27,6 @@ pipeline {
                 }
             }
         }
-        stage('Approval') {
-            steps {
-                timeout(time: 5, unit: 'DAYS') {
-                input message: 'Need to be approved', ok: 'Manager Approval'
-                }
-            }
-        }
         stage('Deploy on Production') {
            steps {
                 sshagent(['pipeline-user-production']) {
