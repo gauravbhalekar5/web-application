@@ -2,7 +2,7 @@ currentBuild.displayName = "HealthCare-Application#"+currentBuild.number
 pipeline {
     agent any
     stages {
-        stage('Poll pollSCM') {
+        stage('Git Checkout') {
             steps {
                 git 'https://github.com/gauravbhalekar5/webapp-project.git'
             }
