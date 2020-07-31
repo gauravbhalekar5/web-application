@@ -27,12 +27,13 @@ pipeline {
                 }
             }
         }
+        timeout(time: 5, unit: 'DAYS') {
+                input message: 'Need to be approved', ok: 'Manager Approval'
+        }
         stage('Deploy on Production') {
            steps {
                 sshagent(['pipeline-user-production']) {
-                    timeout(time: 5, unit: 'DAYS') {
-                    input message: 'Need to be approved', ok: 'Manager Approval'
-                    }
+                    
                     sh """
                   
                     scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@54.187.142.164:/opt/tomcat8/webapps
