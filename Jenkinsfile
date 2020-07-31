@@ -16,11 +16,11 @@ pipeline {
                 sshagent(['pipeline-user']) {
                   sh """
                   
-                  scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@34.213.1.217:/opt/tomcat8/webapps
+                  scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@54.202.111.192:/opt/tomcat8/webapps
 
-                  ssh ec2-user@34.213.1.217 /opt/tomcat8/bin/shutdown.sh
+                  ssh ec2-user@54.202.111.192 /opt/tomcat8/bin/shutdown.sh
 
-                  ssh ec2-user@34.213.1.217 /opt/tomcat8/bin/startup.sh
+                  ssh ec2-user@54.202.111.192 /opt/tomcat8/bin/startup.sh
 
                   """
                 }
