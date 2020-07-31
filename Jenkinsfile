@@ -29,19 +29,19 @@ pipeline {
         }
         stage('Deploy on Production') {
            steps {
-                timeout(time: 5, unit: 'DAYS') {
-                  input message: 'Need to be approved', ok: 'Manager Approval'
-                }
                 sshagent(['pipeline-user-production']) {
-                  sh """
+                    timeout(time: 5, unit: 'DAYS') {
+                    input message: 'Need to be approved', ok: 'Manager Approval'
+                    }
+                    sh """
                   
-                  scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@54.187.142.164:/opt/tomcat8/webapps
+                    scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@54.187.142.164:/opt/tomcat8/webapps
 
-                  ssh ec2-user@54.187.142.164 /opt/tomcat8/bin/shutdown.sh
+                    ssh ec2-user@54.187.142.164 /opt/tomcat8/bin/shutdown.sh
 
-                  ssh ec2-user@54.187.142.164 /opt/tomcat8/bin/startup.sh
+                    ssh ec2-user@54.187.142.164 /opt/tomcat8/bin/startup.sh
 
-                  """
+                    """
                 }
             }
         }      
