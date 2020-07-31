@@ -1,4 +1,4 @@
-currentBuild:displayName = "HealthCare-Application#"+currentBuild:number
+currentBuild.displayName = "HealthCare-Application#"+currentBuild.number
 pipeline {
     agent any
     stages {
