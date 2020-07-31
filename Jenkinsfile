@@ -29,6 +29,9 @@ pipeline {
         }
         stage('Deploy on Production') {
            steps {
+                timeout(time: 5, unit: 'DAYS') {
+                  input message: 'Need to be approved', ok: 'Manager Approval'
+                }
                 sshagent(['pipeline-user-production']) {
                   sh """
                   
