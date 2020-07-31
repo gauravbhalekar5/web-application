@@ -1,9 +1,11 @@
 pipeline {
     agent any
-    triggers {
-         pollSCM "* * * * *"
-    }
     stages {
+        stage('Git Checkout') {
+            steps {
+              git 'https://github.com/gauravbhalekar5/web-application.git'
+            }
+        }
         stage('Build Application') {
             steps {
                sh "mvn clean package"
@@ -14,11 +16,11 @@ pipeline {
                 sshagent(['pipeline-user']) {
                   sh """
                   
-                  scp -o StrictHostKeyChecking=no  target/*.war  ec2-user@34.216.63.115:/opt/tomcat8/webapps
+                  scp -o StrictHostKeyChecking=no  target/*.war  ec2-user@34.213.1.217:/opt/tomcat8/webapps
 
-                  ssh ec2-user@34.216.63.115 /opt/tomcat8/bin/shutdown.sh
+                  ssh ec2-user@34.213.1.217 /opt/tomcat8/bin/shutdown.sh
 
-                  ssh ec2-user@34.216.63.115 /opt/tomcat8/bin/startup.sh
+                  ssh ec2-user@34.213.1.217 /opt/tomcat8/bin/startup.sh
 
                   """
                 }
