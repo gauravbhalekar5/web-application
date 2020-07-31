@@ -4,9 +4,7 @@ pipeline {
     stages {
         stage('Poll pollSCM') {
             steps {
-              triggers {
-                  pollSCM ignorePostCommitHooks: true, scmpoll_spec: '* * * * *'
-              }
+                git 'https://github.com/gauravbhalekar5/webapp-project.git'
             }
         }
         stage('Build Application') {
