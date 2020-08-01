@@ -1,10 +1,13 @@
 currentBuild.displayName = "HealthCare-Application#"+currentBuild.number
 pipeline {
     agent any
+    triggers {
+        pollSCM('* * * * *')
+    }
     stages {
         stage('Git Checkout') {
             steps {
-                git 'https://github.com/gauravbhalekar5/webapp-project.git'
+                git 'https://github.com/gauravbhalekar5/web-application.git'
             }
         }
         stage('Build Application') {
@@ -17,31 +20,15 @@ pipeline {
                 sshagent(['pipeline-user']) {
                   sh """
                   
-                  scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@34.209.28.53:/opt/tomcat8/webapps
+                  scp -o StrictHostKeyChecking=no  target/*.war  ec2-user@54.191.242.160:/opt/tomcat8/webapps
 
-                  ssh ec2-user@34.209.28.53 /opt/tomcat8/bin/shutdown.sh
+                  ssh ec2-user@54.191.242.160 /opt/tomcat8/bin/shutdown.sh
 
-                  ssh ec2-user@34.209.28.53 /opt/tomcat8/bin/startup.sh
+                  ssh ec2-user@54.191.242.160 /opt/tomcat8/bin/startup.sh
 
                   """
                 }
             }
-        }
-        stage('Deploy on Production') {
-           steps {
-                sshagent(['pipeline-user-production']) {
-                    
-                    sh """
-                  
-                    scp -o StrictHostKeyChecking=no  target/web-application.war  ec2-user@54.187.142.164:/opt/tomcat8/webapps
-
-                    ssh ec2-user@54.187.142.164 /opt/tomcat8/bin/shutdown.sh
-
-                    ssh ec2-user@54.187.142.164 /opt/tomcat8/bin/startup.sh
-
-                    """
-                }
-            }
-        }      
+        }        
     }   
 }
