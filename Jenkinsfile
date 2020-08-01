@@ -20,9 +20,9 @@ pipeline {
                 sshagent(['pipeline-user']) {
                   sh """
                   
-                  scp -o StrictHostKeyChecking=no  target/*.war  ec2-user@172.31.12.145:/opt/tomcat8/webapps
+                  scp -o StrictHostKeyChecking=no  target/*.war  ec2-user@34.221.63.95:/opt/tomcat8/webapps
 
-                  ssh ec2-user@172.31.12.145 /opt/tomcat8/bin/script.sh
+                  ssh ec2-user@34.221.63.95 /opt/tomcat8/bin/script.sh
 
                   """
                 }
