@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Building Application and deploying through ansible</h2>
+<h2>Jenkins Pipeline Docker and Ansible CI/CD</h2>
 </body>
 </html>
