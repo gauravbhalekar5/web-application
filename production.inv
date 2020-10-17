@@ -1,2 +1,2 @@
-[production]
-172.31.60.4 ansible_user=ec2-user
+[prod]
+172.31.30.215 ansible_user=ec2-user
