@@ -27,7 +27,7 @@
     - name: Start the container
       docker_container:
         name: container1
-        image: "srkgaurav123/appimage2:{{DOCKER_TAG}}"
+        image: "srkgaurav123/appimage4:{{DOCKER_TAG}}"
         state: started
         published_ports:
           - 0.0.0.0:8080:8080
