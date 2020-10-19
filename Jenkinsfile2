@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
     triggers {
     pollSCM ('* * * * *')
     }
@@ -9,32 +9,31 @@ pipeline {
     stages {
         stage('SCM') {
             steps {
-                git 'https://github.com/gauravbhalekar5/web-application.git'
+              git 'https://github.com/gauravbhalekar5/web-application.git'
+           }
+        }
+        stage('Build the Application') {
+            steps {
+              sh "mvn clean package" 
+           }
+        }
+        stage('build docker image') {
+            steps {
+              sh "docker build . -t srkgaurav123/appimage5:${DOCKER_TAG} "
+           }
+        }
+        stage('push the image to dockerHUB') {
+            steps {
+                withCredentials([string(credentialsId: 'Docker-HUB', variable: 'docker_hub_pwd')]) {
+                sh "docker login -u srkgaurav123 -p ${docker_hub_pwd}"
+                }
+                sh "docker push srkgaurav123/appimage5:${DOCKER_TAG} "
             }
         }
-        stage('Build the Application through Maven') {
+        stage('docker image deploy on production') {
             steps {
-                sh "mvn clean package"
-            }
-        }
-        stage('Build the Docker Image') {
-            steps {
-                sh "docker build . -t srkgaurav123/appimage2:${DOCKER_TAG} "
-            }
-        }
-        stage('Push Docker Image to DockerHUB') {
-            steps {
-                withCredentials([string(credentialsId: 'Docker-HUB', variable: 'docker_pwd')]) {
-                sh "docker login -u srkgaurav123 -p ${docker_pwd}"
-            }
-                
-                sh "docker push srkgaurav123/appimage2:${DOCKER_TAG}"
-            }
-        }
-        stage('Deploy Docker Container on production') {
-            steps {
-                ansiblePlaybook credentialsId: 'deploy_on_production-server', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible_home', inventory: 'production.inv', playbook: 'Deploy docker.yml'
-            }
+              ansiblePlaybook credentialsId: 'production-server', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible_home', inventory: 'production.inv', playbook: 'Deploy docker.yml'
+           }
         }
 
     }
@@ -45,4 +44,5 @@ def getVersion(){
     return commitHash
     //to pickup latest commit ID and store return value in variable 
 }
+
 
